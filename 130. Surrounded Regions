@@ -1,0 +1,48 @@
+class Solution {
+public:
+    //  Idea is instead of searching element from (1,1) to (m-2,n-2)    
+    //start from all boundary and whenever you see a 'O' start dfs fron its X,Y  as theses woud never become 'X'
+    // Also maintain a visited array so to save steps
+    void dfs(vector<vector<char>>& board,int x,int y,vector<vector<int>>& vis)
+    {
+        if(x>=board.size() || x<0 || y>=board[0].size() || y<0 || board[x][y]=='X' || vis[x][y]==1)  return ;
+        
+        board[x][y]='V';
+        vis[x][y]=1;
+        dfs(board,x+1,y,vis);
+         dfs(board,x-1,y,vis);
+         dfs(board,x,y+1,vis);
+         dfs(board,x,y-1,vis);
+    }
+    void solve(vector<vector<char>>& board) {
+        int m= board.size();
+        int n= board[0].size();
+        vector<vector<int>> vis(m,vector<int>(n,-1));
+        for (int i=0;i<n;i++)
+        {
+            if (board[0][i]=='O' && vis[0][i]==-1) dfs(board,0,i,vis);
+        }
+        for (int i=0;i<m;i++)
+        {
+            if (board[i][0]=='O'  && vis[i][0]==-1)   dfs(board,i,0,vis);
+        }
+        for (int i=0;i<m;i++)
+        {
+            if (board[i][n-1]=='O'  && vis[i][n-1]==-1)   dfs(board,i,n-1,vis);
+        }
+        for (int i=0;i<n;i++)
+        {
+            if (board[m-1][i]=='O'  && vis[m-1][i]==-1)   dfs(board,m-1,i,vis);
+        }
+        
+        for (int i=0;i<m;i++)
+        {
+            for (int j=0;j<n;j++)
+            {
+                if (board[i][j]=='V')  board[i][j]='O';
+                else if (board[i][j]=='O')  board[i][j]='X';
+            }
+        }
+        
+    }
+};
