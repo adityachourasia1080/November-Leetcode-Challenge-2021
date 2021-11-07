@@ -1,0 +1,28 @@
+class Solution {
+public:
+    vector<int> singleNumber(vector<int>& nums) {
+        long long int  ans=0;
+        for (int i=0;i<nums.size();i++)
+        {
+            ans=ans ^ nums[i];
+        }
+        
+        ans= ans & (-ans);   
+        // Setting The rightmost bit 
+      
+        vector<int> res;
+        int bucket1=0,bucket2=0;
+        for (int i=0;i<nums.size();i++)
+        {
+            if((ans & nums[i]) ==0)
+            {
+                bucket1 = bucket1 ^ nums[i];
+            }
+            else bucket2= bucket2 ^ nums[i];
+        }
+        res.push_back(bucket1);
+        res.push_back(bucket2);
+        return res;
+        
+    }
+};
