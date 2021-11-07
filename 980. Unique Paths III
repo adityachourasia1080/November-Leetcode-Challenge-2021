@@ -1,0 +1,47 @@
+class Solution {
+public:
+    int dfs(vector<vector<int>> grid,int sx,int sy,int ex,int ey,int steps,int count)
+    {
+        if (sx<0 || sx>=grid.size() || sy<0 || sy>=grid[0].size() || grid[sx][sy]==-1 || grid[sx][sy]==-2)  return 0;
+        if (sx==ex && sy==ey)
+        {
+            if (steps==count+1)  return 1;
+            return 0;
+        }
+        
+        grid[sx][sy]=-2;
+        int tot=0;
+        
+       tot+= dfs(grid,sx+1,sy,ex,ey,steps+1,count);
+       tot+= dfs(grid,sx-1,sy,ex,ey,steps+1,count);
+       tot+=dfs(grid,sx,sy+1,ex,ey,steps+1,count);
+       tot+= dfs(grid,sx,sy-1,ex,ey,steps+1,count);
+        grid[sx][sy]=0;
+        return tot;
+ }
+    int uniquePathsIII(vector<vector<int>>& grid) {
+        int count=0,sx,sy,ex,ey;
+        for (int i=0;i<grid.size();i++)
+        {
+            for (int j=0;j<grid[0].size();j++)
+            {
+                if(grid[i][j]==0)  count++;
+                else if (grid[i][j]==1)
+                {
+                    sx=i;
+                    sy=j;
+                }
+                else if (grid[i][j]==2)
+                {
+                    ex=i;
+                    ey=j;
+                }
+            }
+        }
+       
+        
+        return dfs(grid,sx,sy,ex,ey,0,count);
+
+        
+    }
+};
