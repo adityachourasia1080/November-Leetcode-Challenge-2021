@@ -1,0 +1,24 @@
+class Solution {
+public:
+    long long int cat(int n,int r)
+    {
+        if (n-r<r)
+        {
+            r=n-r;
+        }
+        long long int ans=1;
+        int k=n/2;
+        for (int i=n;i>n-r;i--)
+        {
+          ans=  ans*(i);
+            ans= ans/(r-k+1);
+            k--;
+        }
+       // cout<<ans<<" ";
+        return ans;
+        
+    }
+    int numTrees(int n) {
+        return (int )(cat(2*n,n)/(n+1));
+    }
+};
