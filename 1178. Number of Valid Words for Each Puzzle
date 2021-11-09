@@ -1,0 +1,116 @@
+M1  WILL GIVE TLE BUT EASY TO UNDERSTAND
+class Solution {
+public:
+    vector<int> findNumOfValidWords(vector<string>& words, vector<string>& puzzles) {
+        
+        vector<int> bitmaskpuz,bitmaskwords;
+        int no=0,count=0,condition1=0,shift; string w;
+        
+        for (int i=0;i<puzzles.size();i++)
+        {
+             w= puzzles[i];
+            no=0;
+            for (int j=0;j<w.length();j++)
+            {
+                shift=w[j]-'a';
+                no= no | (1<<(shift));
+            }
+            bitmaskpuz.push_back(no);
+        }
+        
+        for (int i=0;i<words.size();i++)
+        {
+            w=words[i];
+            no=0;
+            for (int j=0;j<w.length();j++)
+            {
+                 no= no | (1<<(w[j]-'a'));
+            }
+            bitmaskwords.push_back(no);
+        }
+        char first;
+        vector<int> ans;
+        for (int i=0;i<puzzles.size();i++)
+        {
+            first= puzzles[i][0];
+            condition1= (1<<(first-'a'));
+            count=0;
+            for (int j=0;j<bitmaskwords.size();j++)
+            {
+                if ((condition1 & bitmaskwords[j])==0)   continue;
+                
+                if ((bitmaskwords[j] & bitmaskpuz[i])==bitmaskwords[j])  count++;
+            }
+            ans.push_back(count);
+            
+        }
+        return ans;
+        
+    }
+};
+
+M2 OPTIMISED
+class Solution {
+public:
+    vector<int> findNumOfValidWords(vector<string>& words, vector<string>& puzzles) {
+        
+        vector<int> bitmaskpuz;
+        int no=0,count=0,condition1=0,shift; string w;
+        unordered_map<char,vector<int>>mp;
+         for (int i=0;i<words.size();i++)
+        {
+            w=words[i];
+            no=0;
+            for (int j=0;j<w.length();j++)
+            {
+                 no= no | (1<<(w[j]-'a'));
+               
+            }
+             unordered_set<char> st;
+           
+            for (int j=0;j<w.length();j++)
+            {
+                  if (st.find(w[j])!=st.end())  continue;
+                st.insert(w[j]);
+                 mp[w[j]].push_back(no);
+            }
+        }
+        for (int i=0;i<puzzles.size();i++)
+        {
+             w= puzzles[i];
+            no=0;
+            for (int j=0;j<w.length();j++)
+            {
+                shift=w[j]-'a';
+                no= no | (1<<(shift));
+            }
+            bitmaskpuz.push_back(no);
+        }
+        
+       
+        char first;
+        vector<int> ans;
+        for (int i=0;i<puzzles.size();i++)
+        {
+            first= puzzles[i][0];
+//             condition1= (1<<(first-'a'));
+//             count=0;
+//             for (int j=0;j<bitmaskwords.size();j++)
+//             {
+//                 if ((condition1 & bitmaskwords[j])==0)   continue;
+                
+//                 if ((bitmaskwords[j] & bitmaskpuz[i])==bitmaskwords[j])  count++;
+//             }
+//             ans.push_back(count);
+            count=0;
+            for (auto x: mp[first])
+            {
+                if (( x & bitmaskpuz[i])==x)  count++;
+            }
+             ans.push_back(count);
+            
+        }
+        return ans;
+        
+    }
+};
