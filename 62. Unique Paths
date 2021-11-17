@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int hat( int x,int y,int ex,int ey,vector<vector<int>> &dp)
+    {
+        if (x==ex-1  && y==ey-1)  return 1;
+        if (x>=ex || y>=ey)  return 0;
+        
+        if (dp[x][y]!=-1)  return dp[x][y];
+        
+        dp[x][y]=hat(x+1,y,ex,ey,dp)+hat(x,y+1,ex,ey,dp);
+        
+        return dp[x][y];
+    }
+    int uniquePaths(int m, int n) {
+        vector<vector<int>> path(m,vector<int>(n,-1));
+                                 
+        return hat( 0,0,m,n,path);
+    }
+};
