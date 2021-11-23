@@ -1,0 +1,58 @@
+M1---GIVES TLE
+ int dfs(int u,unordered_map<int,vector<int>> arr,unordered_map<int,int>& vis,unordered_set<int> &st)
+    {
+        st.insert(u);
+        vis[u]=1;
+        int ht=1;
+        for (auto v:arr[u])
+        {
+            if (st.find(v)==st.end())
+            {
+                ht=max(ht,dfs(v,arr,vis,st)+1);
+            }
+        }
+        st.erase(u);
+        return ht;
+    }
+    int gcd(int a,int b)
+    {
+        if (a==0 ) return b;
+        if (b==0)  return a;
+        if (a>b)
+        {
+            return gcd(a%b,b);
+        }
+        return gcd(a,b%a);
+    }
+    int largestComponentSize(vector<int>& nums) {
+        int n= nums.size();
+        unordered_map<int,vector<int>>mp;
+        unordered_map<int,int> vis;
+        for (int i=0;i<n;i++)
+        {
+            vis[nums[i]]=-1;
+            for (int j=i+1;j<n;j++)
+            {
+                int a= gcd( nums[i],nums[j]);
+                if (a>1)
+                {
+                    mp[nums[i]].push_back(nums[j]);
+                    mp[nums[j]].push_back(nums[i]);
+                   
+                }
+            }
+        }
+        int max_ht=1;
+     unordered_set<int> st;
+        for (auto x:mp)
+        {
+            if (vis[x.first]==-1)
+            {
+           int ht=dfs(x.first,mp,vis,st);
+            max_ht=max(max_ht,ht);
+            }
+           
+        }
+        return max_ht;
+        
+    }
