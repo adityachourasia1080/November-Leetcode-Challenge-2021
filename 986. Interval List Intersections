@@ -1,0 +1,40 @@
+class Solution {
+public:
+    vector<vector<int>> intervalIntersection(vector<vector<int>>& f, vector<vector<int>>& s) {
+        
+        vector<vector<int>> ans;
+        if (f.size()==0 || s.size()==0)  return  ans;
+        int i=0,j=0,x1,x2,y1,y2;
+        while(i<f.size() && j<s.size())
+        {
+            x1=f[i][0],y1=f[i][1],x2=s[j][0],y2=s[j][1];
+            if(x1>=x2 && y1>=y2 && y2>=x1)
+            {
+                ans.push_back({x1,y2});
+                j++;
+            }
+            else if (x2>=x1 && y2>=y1 && y1>=x2)
+            {
+                ans.push_back({x2,y1});
+                i++;
+            }
+            else if (x1>=x2 && y2>=y1)
+            {
+                ans.push_back({x1,y1});
+                i++;
+            }
+            else if (x2>=x1 && y1>=y2)
+            {
+                ans.push_back({x2,y2});
+                j++;
+            }
+            else
+            {
+                if (y2>y1) i++;
+                else j++;
+            }
+        }
+       return ans;
+        
+    }
+};
