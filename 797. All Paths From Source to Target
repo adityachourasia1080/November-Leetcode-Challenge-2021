@@ -1,0 +1,30 @@
+class Solution {
+public:
+    
+    vector<vector<int>> res;
+   
+    vector<vector<int>>* graph_ptr;
+    
+    vector<int> path = {0};
+    
+    void dfs(int n) {
+       
+        if(n == graph_ptr->size()-1) {
+            res.push_back(path);
+            return;
+        }
+
+        for(int s : (*graph_ptr)[n]) {
+            path.push_back(s);
+            dfs(s);
+            path.pop_back();
+        }
+    }
+    
+    vector<vector<int>> allPathsSourceTarget(vector<vector<int>>& graph) {
+       
+        graph_ptr = &graph;
+        dfs(0);
+        return res;
+    }
+};
