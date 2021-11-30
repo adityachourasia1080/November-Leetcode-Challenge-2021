@@ -1,0 +1,115 @@
+class Solution {
+public:
+    vector<int> lsl(vector<int> pass)
+  {
+      int n=-1;
+      stack<int> st;
+      int i=0;
+      vector<int> ans;
+      while(i<pass.size())
+      {
+          if (st.empty())
+          {
+              ans.push_back(n);
+          }
+          else if (pass[st.top()]<pass[i])
+          {
+              ans.push_back(st.top());
+          }
+          else if (pass[st.top()]>=pass[i])
+          {
+              while(!st.empty() && pass[st.top()]>=pass[i])
+              {
+                  st.pop();
+              }
+              if (st.empty())
+              {
+                  ans.push_back(n);
+              }
+              else
+              {
+                  ans.push_back(st.top());
+              }
+              
+          }
+          st.push(i);
+          i++;
+      }
+      
+      return ans;
+      
+  }
+  vector<int> lsr(vector<int> pass)
+  {
+      int n= pass.size();
+      stack<int> st;
+      int i=pass.size()-1;
+      vector<int> ans;
+      while(i>=0)
+      {
+          if (st.empty())
+          {
+              ans.push_back(n);
+          }
+          else if (pass[st.top()]<pass[i])
+          {
+              ans.push_back(st.top());
+          }
+          else if (pass[st.top()]>=pass[i])
+          {
+              while(!st.empty() && pass[st.top()]>=pass[i])
+              {
+                  st.pop();
+              }
+              if (st.empty())
+              {
+                  ans.push_back(n);
+              }
+              else
+              {
+                  ans.push_back(st.top());
+              }
+              
+          }
+          st.push(i);
+          i--;
+      }
+      
+      reverse(ans.begin(),ans.end());
+      return ans;
+  }
+    int maximalRectangle(vector<vector<char>>& M) {
+        int n= M.size();
+        if (n==0)  return 0;
+        int m=M[0].size();
+        if (m==0)   return 0;
+        vector<int> left(m),right(m);
+        vector<int> pass(m,0);
+        int max_area=0;
+        for (int i=0;i<n;i++)
+        {
+            for (int j=0;j<m;j++)
+            {
+                if (M[i][j]=='0')
+                {
+                    pass[j]=0;
+                }
+                else
+                {
+                    pass[j]+=1;
+                }
+            }
+            
+            left= lsr(pass);
+            right=lsl(pass);
+            
+            for (int j=0;j<m;j++)
+            {
+                max_area=max(max_area,abs(left[j]-right[j]-1) * (pass[j]));
+            }
+            //cout<<max_area<<' ';
+        }
+        return max_area;
+        
+    }
+};
